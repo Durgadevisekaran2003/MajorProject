@@ -1,0 +1,17 @@
+.linkmove {
+  margin-left: 30px;
+}
+
+.toggle-button-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
