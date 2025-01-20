@@ -42,9 +42,9 @@ const handleUserRegister = async (req, res) => {
     message: "",
     error: "",
   };
-  const { email, password, confirmpassword, usertype } = req.body;
+  const { email, password, confirmpassword } = req.body;
 
-  if (!email || !password || !usertype || !confirmpassword) {
+  if (!email || !password || !confirmpassword) {
     response.error = "All fields are required";
     return res.status(200).json(response);
   }
@@ -63,13 +63,13 @@ const handleUserRegister = async (req, res) => {
     const newUser = new Login({
       email_id: email,
       password: hashedPassword,
-      role: usertype,
-      created_at: Date.now(),
+      role: "user",
     });
     await newUser.save();
     response.message = "User Successfully registered";
     return res.status(200).json(response);
   } catch (error) {
+    console.log(error);
     response.error = "An error occurred while registering the user";
     return res.status(200).json(response);
   }
@@ -85,7 +85,7 @@ const handleForgotPassword = async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "",
+      user: `${process.env.FROM_EMAIL}`,
       pass: `${process.env.APP_PASS}`,
     },
   });
@@ -101,9 +101,9 @@ const handleForgotPassword = async (req, res) => {
 
     const resetLink = `${process.env.FRONTEND_URL}/resetpassword?token=${token}`;
     const mailOptions = {
-      from: "",
+      from: `${process.env.FROM_EMAIL}`,
       to: email,
-      subject: "",
+      subject: "Password Reset",
       html: `
           <div style="text-align: center; font-family: Arial, sans-serif;">
       <h1>Password Reset Request</h1>
